@@ -1,0 +1,55 @@
+diff -ruN original/drivers/misc/Kconfig modified/Kconfig
+--- original/drivers/misc/Kconfig	2025-12-09 17:09:13.000000000 +0200
++++ modified/Kconfig	2026-11-16 20:53:11.144547937 +0200
+@@ -654,4 +654,5 @@
+ source "drivers/misc/pvpanic/Kconfig"
+ source "drivers/misc/mchp_pci1xxxx/Kconfig"
+ source "drivers/misc/keba/Kconfig"
++source "drivers/misc/mymod/Kconfig"
+ endmenu
+diff -ruN original/drivers/misc/Makefile modified/Makefile
+--- original/drivers/misc/Makefile	2025-12-09 17:09:13.000000000 +0200
++++ modified/Makefile	2026-11-16 20:53:11.154547995 +0200
+@@ -75,3 +75,4 @@
+ obj-$(CONFIG_NSM)		+= nsm.o
+ obj-$(CONFIG_MARVELL_CN10K_DPI)	+= mrvl_cn10k_dpi.o
+ obj-y				+= keba/
++obj-$(CONFIG_MYMOD)             += mymod/
+diff -ruN original/drivers/misc/mymod/Kconfig modified/mymod/Kconfig
+--- original/drivers/misc/mymod/Kconfig	1970-01-01 02:00:00.000000000 +0200
++++ modified/mymod/Kconfig	2026-11-16 20:53:11.166548064 +0200
+@@ -0,0 +1,4 @@
++config MYMOD
++    tristate "My custom kernel module"
++    help
++      My first Linux kernel module.
+diff -ruN original/drivers/misc/mymod/Makefile modified/mymod/Makefile
+--- original/drivers/misc/mymod/Makefile	1970-01-01 02:00:00.000000000 +0200
++++ modified/mymod/Makefile	2026-11-16 20:53:11.176548122 +0200
+@@ -0,0 +1 @@
++obj-$(CONFIG_MYMOD) += mymod.o
+diff -ruN original/drivers/misc/mymod/mymod.c modified/mymod/mymod.c
+--- original/drivers/misc/mymod/mymod.c	1970-01-01 02:00:00.000000000 +0200
++++ modified/mymod/mymod.c	2026-11-16 20:53:11.184548168 +0200
+@@ -0,0 +1,20 @@
++#include <linux/module.h>
++#include <linux/kernel.h>
++
++static int __init mymod_init(void)
++{
++    printk(KERN_INFO "Hello, kernel!\n");
++    return 0;
++}
++
++static void __exit mymod_exit(void)
++{
++    printk(KERN_INFO "Goodbye, kernel!\n");
++}
++
++module_init(mymod_init);
++module_exit(mymod_exit);
++
++MODULE_LICENSE("GPL");
++MODULE_AUTHOR("Student");
++MODULE_DESCRIPTION("My first Linux kernel module");
+\ No newline at end of file
